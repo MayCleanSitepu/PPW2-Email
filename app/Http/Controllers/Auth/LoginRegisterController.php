@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Mail\SendEmail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class LoginRegisterController extends Controller
 {
@@ -49,6 +51,13 @@ class LoginRegisterController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ]);
+
+        $content = [
+            'subject' => $request->name,
+            'body' => $request->email
+        ];
+        Mail::to($request->email)->send(new SendEmail($content));
+
 
         $credentials = $request->only('email', 'password');
         Auth::attempt($credentials);

@@ -20,6 +20,6 @@ class SendEmail extends Mailable
     public function build()
     {
         return $this->subject($this->data['subject'])
-            ->view('emails.sendemail');
+            ->view('emails.send');
     }
 }
